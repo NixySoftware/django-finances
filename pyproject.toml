@@ -3,7 +3,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "django_transactions"
+name = "django-transactions"
 version = "0.0.1"
 description = "Financial transactions and payments for Django."
 authors = ["Daniel Huisman <daniel@huisman.me>"]
