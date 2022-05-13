@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_transactions.transactions',
+    'django_transactions.payments',
+    'django_transactions.payments.providers.invoice',
+    'django_transactions.payments.providers.sepa',
     'demo',
 ]
 
