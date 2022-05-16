@@ -1,0 +1,99 @@
+{% load currency %}
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.008.001.10" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="urn:iso:std:iso:20022:tech:xsd:pain.008.001.10 pain.008.001.10.xsd">
+    <CstmrDrctDbtInitn>
+        <GrpHeader>
+            <MsgId>{{ direct_debit.identifier }}</MsgId>
+            <CreDtTm>{% now 'c' %}</CreDtTm>
+            <NbOfTxs>{{ direct_debit.instruction_count }}</NbOfTxs>
+            <CtrlSum>{{ direct_debit.amount|currency_amount }}</CtrlSum>
+            <InitgPty>
+                <Nm>{{ creditor.name }}</Nm>
+            </InitgPty>
+        </GrpHeader>
+        {% for direct_debit_batch in direct_debit.batches.all %}
+        <PmtInf>
+            <PmntInfId>{{ direct_debit_batch.identifier }}</PmntInfId>
+            <PmtMtd>DD</PmtMtd>
+            <NbOfTxs>{{ direct_debit_batch.instructions.count }}</NbOfTxs>
+            <CtrlSum>{{ direct_debit_batch.amount|currency_amount }}</CtrlSum>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Cd>SEPA</Cd>
+                </SvcLvl>
+                <LclInstrm>
+                    <Cd>CORE</Cd>
+                </LclInstrm>
+                <SeqTp>{{ direct_debit_batch.sequence_type }}</SeqTp>
+            </PmtTpInf>
+            <ReqdColltnDt>{{ direct_debit.collected_at|date:'Y-m-d' }}</ReqdColltnDt>
+            <Cdtr>
+                <Nm>{{ creditor.name }}</Nm>
+            </Cdtr>
+            <CdtrAcct>
+                <Id>
+                    <IBAN>{{ creditor.iban }}</IBAN>
+                </Id>
+            </CdtrAcct>
+            <CdtrAgt>
+                <FinInstnId>
+                    <BIC>{{ creditor.bic }}</BIC>
+                </FinInstnId>
+            </CdtrAgt>
+            <ChgrBr>SLEV</ChgrBr>
+            <CdtrSchmeId>
+                <Id>
+                    <PrvtId>
+                        <Othr>
+                            <Id>{{ creditor.identifier }}</Id>
+                            <SchmeNm>
+                                <Prtry>SEPA</Prtry>
+                            </SchmeNm>
+                        </Othr>
+                    </PrvtId>
+                </Id>
+            </CdtrSchmeId>
+            {% for direct_debit_instruction in direct_debit_batch.instructions.all %}
+            <DrctDbtTxInf>
+                <PmtId>
+                    <EndToEndId>{{ direct_debit_instruction.identifier }}</EndToEndId>
+                </PmtId>
+                <InstdAmt Ccy="EUR">{{ direct_debit_instruction.amount|currency_amount }}</InstdAmt>
+                <DrctDbtTx>
+                    <MndtRltdInf>
+                        <MndtId>{{ direct_debit_instruction.mandate.identifier }}</MndtId>
+                        <DtOfSgntr>{{ direct_debit_instruction.mandate.signed_at|date:'Y-m-d' }}</DtOfSgntr>
+                    </MndtRltdInf>
+                </DrctDbtTx>
+                <DbtrAgt>
+                    <FinInstnId>
+                        <BIC>{{ direct_debit_instruction.mandate.bic }}</BIC>
+                    </FinInstnId>
+                </DbtrAgt>
+                <Dbtr>
+                    <Nm>{{ direct_debit_instruction.mandate.entity.name }}</Nm>
+                </Dbtr>
+                <DbtrAcct>
+                    <Id>
+                        <IBAN>{{ direct_debit_instruction.mandate.iban }}</IBAN>
+                    </Id>
+                </DbtrAcct>
+                <RmtInf>
+                    {% if direct_debit_instruction.description %}
+                        <Ustrd>{{ direct_debit_instruction.description }}</Ustrd>
+                    {% endif %}
+                    {% if direct_debit_instruction.reference %}
+                        <Strd>
+                            <CdtrRefInf>
+                                <Ref>{{ direct_debit_instruction.reference }}</Ref>
+                            </CdtrRefInf>
+                        </Strd>
+                    {% endif %}
+                </RmtInf>
+            </DrctDbtTxInf>
+            {% endfor %}
+        </PmtInf>
+        {% endfor %}
+    </CstmrDrctDbtInitn>
+</Document>

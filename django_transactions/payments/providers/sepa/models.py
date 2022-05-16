@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from django_transactions.transactions.settings import TransactionsSettings
 from django_transactions.transactions.models import FinancialEntity
 from django_transactions.payments.models import Payment
 
@@ -16,12 +17,12 @@ class Mandate(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    accepted_at = models.DateTimeField()
+    signed_at = models.DateTimeField()
     identifier = models.CharField(max_length=35)
     iban = models.CharField(max_length=34)
     bic = models.CharField(max_length=11)
     reason = models.TextField()
-    next_sequence_type = models.CharField(max_length=4, choices=SequenceType, default=SequenceType.FIRST)
+    next_sequence_type = models.CharField(max_length=4, choices=SequenceType.choices, default=SequenceType.FIRST)
 
     # TODO: status, error message
 
@@ -43,7 +44,7 @@ class DirectDebitBatch(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     identifier = models.CharField(max_length=35)
-    sequence_type = models.CharField(max_length=4, choices=SequenceType)
+    sequence_type = models.CharField(max_length=4, choices=SequenceType.choices)
 
     direct_debit = models.ForeignKey(DirectDebit, related_name='batches', on_delete=models.CASCADE)
 
@@ -55,7 +56,9 @@ class DirectDebitInstruction(models.Model):
     identifier = models.CharField(max_length=35)
     iban = models.CharField(max_length=34)
     bic = models.CharField(max_length=11)
-    # TODO: description, amount, etc
+    amount = models.BigIntegerField() if TransactionsSettings.USE_BIG_INTEGER else models.IntegerField()
+    description = models.CharField(max_length=140, blank=True)
+    reference = models.CharField(max_length=35, blank=True)
 
     batch = models.ForeignKey(DirectDebit, related_name='instructions', on_delete=models.CASCADE)
     mandate = models.ForeignKey(Mandate, related_name='instructions', blank=True, null=True, on_delete=models.SET_NULL)

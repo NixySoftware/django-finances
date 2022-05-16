@@ -29,8 +29,8 @@ class Transaction(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    description = models.TextField()
     amount = models.BigIntegerField() if TransactionsSettings.USE_BIG_INTEGER else models.IntegerField()
+    description = models.TextField()
 
     # TODO: consider adding currency support (e.g. local_amount and local_currency)
 
