@@ -1,3 +1,3 @@
-# Django Transactions
+# Django Finances
 
 Financial transactions and payments for Django.

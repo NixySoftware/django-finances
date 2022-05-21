@@ -22,6 +22,6 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ] + ([
                 ('transaction', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='payment', to='transactions.transaction')),
-            ] if apps.is_installed('django_transactions.transactions') else []),
+            ] if apps.is_installed('django_finances.transactions') else []),
         ),
     ]

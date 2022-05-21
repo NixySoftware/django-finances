@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django_transactions.settings import Settings
-from django_transactions.transactions.models import FinancialEntity
-from django_transactions.payments.models import Payment
+from django_finances.settings import Settings
+from django_finances.transactions.models import FinancialEntity
+from django_finances.payments.models import Payment
 
 
 class SequenceType(models.TextChoices):

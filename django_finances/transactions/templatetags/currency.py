@@ -2,7 +2,7 @@ from typing import Optional
 
 from django import template
 
-from django_transactions.settings import Settings
+from django_finances.settings import Settings
 
 register = template.Library()
 

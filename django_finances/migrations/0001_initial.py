@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 
-from django_transactions.settings import Settings
+from django_finances.settings import Settings
 
 
 class Migration(migrations.Migration):

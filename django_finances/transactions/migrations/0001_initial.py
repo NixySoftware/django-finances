@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 
-from django_transactions.settings import Settings
+from django_finances.settings import Settings
 
 
 class Migration(migrations.Migration):
@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('django_transactions', '0001_initial'),
+        ('django_finances', '0001_initial'),
     ]
 
     operations = [
@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('amount', models.BigIntegerField() if Settings.USE_BIG_INTEGER else models.IntegerField()),
                 ('description', models.TextField()),
-                ('entity', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transactions', to='django_transactions.financialentity')),
+                ('entity', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='transactions', to='django_finances.financialentity')),
             ] + ([
                 ('settled_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='settled', to='transactions.transaction')),
             ] if Settings.TRANSACTION_SETTLEMENT_ENABLED else []),

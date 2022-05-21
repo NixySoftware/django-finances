@@ -1,6 +1,6 @@
 from django.db import models
 
-from django_transactions.payments.models import Payment
+from django_finances.payments.models import Payment
 
 
 def get_invoice_template_file_path(invoice_template_file, filename):

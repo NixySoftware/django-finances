@@ -28,10 +28,8 @@ class Transaction(models.Model):
             entities = FinancialEntity.objects.with_balance().all()
 
             for entity in entities:
-                print(entity.name, entity.balance)
-
                 # Find unsettled transactions
-                transactions = entity.transactions.filter(settled_by_payment__isnull=True, settlement_payment__isnull=True)
+                transactions = entity.transactions.filter(settled_by__isnull=True, settled__isnull=True)
 
                 # Sanity check for current state
                 if entity.balance != sum([transaction.amount for transaction in transactions]):

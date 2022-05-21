@@ -35,7 +35,7 @@ def load_currency_definitions(path: str):
 
 
 class Settings:
-    _settings = getattr(django_settings, 'DJANGO_TRANSACTIONS', {})
+    _settings = getattr(django_settings, 'DJANGO_FINANCES', {})
 
     USE_BIG_INTEGER = _settings.get('use_big_integer', False)
 

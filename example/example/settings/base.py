@@ -124,6 +124,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Django Transactions & Payments
+# Django Finances
 
-DJANGO_TRANSACTIONS = {}
+DJANGO_FINANCES = {}

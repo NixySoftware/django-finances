@@ -3,7 +3,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "django-transactions"
+name = "django-finances"
 version = "0.0.1"
 description = "Financial transactions and payments for Django."
 authors = ["Daniel Huisman <daniel@huisman.me>"]
@@ -11,8 +11,8 @@ maintainers = ["Daniel Huisman <daniel@huisman.me>"]
 license = "MIT"
 readme = "README.md"
 
-homepage = "https://github.com/DanielHuisman/django-transactions"
-repository = "https://github.com/DanielHuisman/django-transactions"
+homepage = "https://github.com/DanielHuisman/django-finances"
+repository = "https://github.com/DanielHuisman/django-finances"
 
 keywords = ["django", "transaction", "payment", "finance"]
 
