@@ -1,40 +1,47 @@
-from django.conf import settings
-from django.db import models
-from django.db.models import Sum
+from django.db import models, transaction as db_transaction
 
-from .settings import TransactionsSettings
-
-
-class FinancialEntity(models.Model):
-    class Meta:
-        verbose_name_plural = 'financial entities'
-
-    name = models.CharField(max_length=TransactionsSettings.FINANCIAL_ENTITY_NAME_MAX_LENGTH)
-
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def balance(self):
-        return self.transactions.aggregate(amount=Sum('amount'))['amount']
-
-
-class FinancialEntityMixin:
-    entity = models.OneToOneField(FinancialEntity, blank=True, null=True, on_delete=models.SET_NULL)
+from ..models import FinancialEntity
+from ..settings import Settings
 
 
 class Transaction(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    amount = models.BigIntegerField() if TransactionsSettings.USE_BIG_INTEGER else models.IntegerField()
+    amount = models.BigIntegerField() if Settings.USE_BIG_INTEGER else models.IntegerField()
     description = models.TextField()
 
     # TODO: consider adding currency support (e.g. local_amount and local_currency)
 
     entity = models.ForeignKey(FinancialEntity, related_name='transactions', on_delete=models.PROTECT)
 
+    if Settings.TRANSACTION_SETTLEMENT_ENABLED:
+        settled_by = models.ForeignKey('self', related_name='settled', blank=True, null=True, on_delete=models.SET_NULL)
+
     def __str__(self):
         return self.description
+
+    @staticmethod
+    def generate_settlements():
+        with db_transaction.atomic():
+            # Find entities and their balances
+            entities = FinancialEntity.objects.with_balance().all()
+
+            for entity in entities:
+                print(entity.name, entity.balance)
+
+                # Find unsettled transactions
+                transactions = entity.transactions.filter(settled_by_payment__isnull=True, settlement_payment__isnull=True)
+
+                # Sanity check for current state
+                if entity.balance != sum([transaction.amount for transaction in transactions]):
+                    raise Exception('Balance and sum of unsettled transactions are not equal.')
+
+                # Check if there is a balance to settle
+                if entity.balance == 0:
+                    continue
+
+                # Create settlement transaction
+                settlement_transaction = Transaction(description=Settings.TRANSACTION_SETTLEMENT_DESCRIPTION, amount=-entity.balance, entity=entity)
+                settlement_transaction.save()
+                settlement_transaction.settled.set(transactions)

@@ -34,7 +34,7 @@ def load_currency_definitions(path: str):
     return currency_definitions
 
 
-class TransactionsSettings:
+class Settings:
     _settings = getattr(django_settings, 'DJANGO_TRANSACTIONS', {})
 
     USE_BIG_INTEGER = _settings.get('use_big_integer', False)
@@ -50,3 +50,10 @@ class TransactionsSettings:
 
     _financial_entity_settings = _settings.get('financial_entities', {})
     FINANCIAL_ENTITY_NAME_MAX_LENGTH = _financial_entity_settings.get('name_max_length', 255)
+
+    _transaction_settings = _settings.get('transactions', {})
+    TRANSACTION_SETTLEMENT_ENABLED = _transaction_settings.get('settlement_enabled', True)
+    TRANSACTION_SETTLEMENT_DESCRIPTION = _transaction_settings.get('settlement_name', 'Settlement')
+
+    _payment_settings = _settings.get('payments', {})
+    _provider_settings = _payment_settings.get('providers', {})

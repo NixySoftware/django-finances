@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django_transactions.transactions.settings import TransactionsSettings
+from django_transactions.settings import Settings
 from django_transactions.transactions.models import FinancialEntity
 from django_transactions.payments.models import Payment
 
@@ -56,7 +56,7 @@ class DirectDebitInstruction(models.Model):
     identifier = models.CharField(max_length=35)
     iban = models.CharField(max_length=34)
     bic = models.CharField(max_length=11)
-    amount = models.BigIntegerField() if TransactionsSettings.USE_BIG_INTEGER else models.IntegerField()
+    amount = models.BigIntegerField() if Settings.TRANSACTION_USE_BIG_INTEGER else models.IntegerField()
     description = models.CharField(max_length=140, blank=True)
     reference = models.CharField(max_length=35, blank=True)
 
