@@ -1,6 +1,7 @@
 import os
 from typing import TypedDict
 
+from django.apps import apps
 from django.conf import settings as django_settings
 from lxml import etree
 
@@ -52,8 +53,10 @@ class Settings:
     FINANCIAL_ENTITY_NAME_MAX_LENGTH = _financial_entity_settings.get('name_max_length', 255)
 
     _transaction_settings = _settings.get('transactions', {})
+    TRANSACTION_ENABLED = apps.is_installed('django_finances.transactions')
     TRANSACTION_SETTLEMENT_ENABLED = _transaction_settings.get('settlement_enabled', True)
     TRANSACTION_SETTLEMENT_DESCRIPTION = _transaction_settings.get('settlement_name', 'Settlement')
 
     _payment_settings = _settings.get('payments', {})
     _provider_settings = _payment_settings.get('providers', {})
+    PAYMENT_ENABLED = apps.is_installed('django_finances.payments')

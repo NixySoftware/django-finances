@@ -1,6 +1,6 @@
 from django.db import models
 
-from django_finances.payments.models import Payment
+from django_finances.settings import Settings
 
 
 def get_invoice_template_file_path(invoice_template_file, filename):
@@ -28,7 +28,9 @@ class Invoice(models.Model):
     # TODO
 
     template = models.ForeignKey(InvoiceTemplate, related_name='invoices', blank=True, null=True, on_delete=models.CASCADE)
-    payment = models.OneToOneField(Payment, related_name='invoice', on_delete=models.PROTECT)
+
+    if Settings.PAYMENT_ENABLED:
+        payment = models.OneToOneField('payments.Payment', related_name='invoice', on_delete=models.PROTECT)
 
 
 class InvoiceFile(models.Model):
