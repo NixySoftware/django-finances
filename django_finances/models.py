@@ -15,7 +15,8 @@ class FinancialEntity(models.Model):
     class Meta:
         verbose_name_plural = 'financial entities'
 
-    objects = FinancialEntityManager()
+    if Settings.TRANSACTION_ENABLED:
+        objects = FinancialEntityManager()
 
     name = models.CharField(max_length=Settings.FINANCIAL_ENTITY_NAME_MAX_LENGTH)
 
