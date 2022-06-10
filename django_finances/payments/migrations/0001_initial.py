@@ -12,6 +12,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('transactions', '0001_initial'),
+    ] if Settings.TRANSACTION_ENABLED else [
+        ('django_finances', '0001_initial'),
     ]
 
     operations = [
