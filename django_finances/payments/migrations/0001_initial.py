@@ -21,6 +21,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+                ('amount', models.IntegerField()),
             ] + ([
                 ('transaction', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='payment', to='transactions.transaction')),
             ] if Settings.TRANSACTION_ENABLED else []),
