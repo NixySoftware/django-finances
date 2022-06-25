@@ -15,8 +15,12 @@ class ProviderMollie(Provider):
 
     STATUS_LOOKUP: dict[str, Payment.Status] = {
         'open': Payment.Status.OPEN,
+        'canceled': Payment.Status.CANCELED,
         'pending': Payment.Status.PENDING,
-
+        'authorized': Payment.Status.AUTHORIZED,
+        'expired': Payment.Status.EXPIRED,
+        'failed': Payment.Status.FAILED,
+        'paid': Payment.Status.COMPLETED
     }
 
     _client: Client
