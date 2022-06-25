@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from django_finances.models import FinancialEntity
-from django_finances.settings import Settings
 
 
 class SequenceType(models.TextChoices):
@@ -55,12 +54,10 @@ class DirectDebitInstruction(models.Model):
     identifier = models.CharField(max_length=35)
     iban = models.CharField(max_length=34)
     bic = models.CharField(max_length=11)
-    amount = models.BigIntegerField() if Settings.USE_BIG_INTEGER else models.IntegerField()
     description = models.CharField(max_length=140, blank=True)
     reference = models.CharField(max_length=35, blank=True)
 
     batch = models.ForeignKey(DirectDebit, related_name='instructions', on_delete=models.CASCADE)
     mandate = models.ForeignKey(Mandate, related_name='instructions', blank=True, null=True, on_delete=models.SET_NULL)
 
-    if Settings.PAYMENT_ENABLED:
-        payment = models.OneToOneField('payments.Payment', related_name='direct_debit_instruction', on_delete=models.PROTECT)
+    payment = models.OneToOneField('payments.Payment', related_name='direct_debit_instruction', on_delete=models.PROTECT)

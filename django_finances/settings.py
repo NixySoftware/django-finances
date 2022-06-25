@@ -1,4 +1,6 @@
+import functools
 import os
+from importlib import import_module
 from typing import TypedDict
 
 from django.apps import apps
@@ -58,5 +60,19 @@ class Settings:
     TRANSACTION_SETTLEMENT_DESCRIPTION = _transaction_settings.get('settlement_name', 'Settlement')
 
     _payment_settings = _settings.get('payments', {})
-    _provider_settings = _payment_settings.get('providers', {})
     PAYMENT_ENABLED = apps.is_installed('django_finances.payments')
+    PAYMENT_PROVIDERS = _payment_settings.get('providers', '')
+
+    @staticmethod
+    @functools.cache
+    def get_payment_providers():
+        provider_module = import_module(Settings.PAYMENT_PROVIDERS)
+        return provider_module.providers
+
+    @staticmethod
+    def get_payment_provider(cls):
+        providers = Settings.get_payment_providers()
+        for provider in providers:
+            if isinstance(provider, cls):
+                return provider
+        return None
