@@ -28,8 +28,8 @@ class ProviderMollie(Provider):
     _redirect_url: str
 
     def __init__(self, api_key: str, webhook_url: str, redirect_url: str = None):
-        self.client = Client()
-        self.client.set_api_key(api_key)
+        self._client = Client()
+        self._client.set_api_key(api_key)
 
         self._webhook_url = webhook_url
         self._redirect_url = redirect_url
@@ -68,7 +68,7 @@ class ProviderMollie(Provider):
     def webhook_payment(self, mollie_id: str):
         if mollie_id.startswith('tr_'):
             # Fetch Mollie payment data
-            payment_data = self.client.payments.get(mollie_id)
+            payment_data = self._client.payments.get(mollie_id)
 
             # Update Mollie payment
             mollie_payment = MolliePayment.objects.get(identifier=payment_data['id'])
