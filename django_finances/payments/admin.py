@@ -8,6 +8,6 @@ from .models import Payment
 
 @register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['created_at', 'updated_at', 'transaction'] if Settings.TRANSACTION_ENABLED else ['created_at', 'updated_at', 'amount', 'description']
-    list_filter = ['created_at', 'updated_at']
+    list_display = ['created_at', 'updated_at', 'status', 'transaction'] if Settings.TRANSACTION_ENABLED else ['created_at', 'updated_at', 'status', 'amount', 'description']
+    list_filter = ['created_at', 'updated_at', 'status']
     ordering = ['-created_at']
