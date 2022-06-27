@@ -65,7 +65,7 @@ class ProviderMollie(Provider):
 
             return mollie_payment
 
-    def webhook_payment(self, mollie_id: str):
+    def webhook(self, mollie_id: str):
         if mollie_id.startswith('tr_'):
             # Fetch Mollie payment data
             payment_data = self._client.payments.get(mollie_id)
