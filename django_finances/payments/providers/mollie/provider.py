@@ -72,13 +72,13 @@ class ProviderMollie(Provider):
 
             # Update Mollie payment
             mollie_payment = MolliePayment.objects.get(identifier=payment_data['id'])
-            mollie_payment.status = ProviderMollie.STATUS_LOOKUP[payment_data.get('status')]
-            mollie_payment.save()
+            mollie_payment.payment.status = ProviderMollie.STATUS_LOOKUP[payment_data.get('status')]
+            mollie_payment.payment.save()
         elif mollie_id.startswith('ord_'):
             # Ignore webhooks for orders
             pass
         elif mollie_id.startswith('sub_'):
             # Ignore webhooks for subscriptions
             pass
-
-        raise Exception(f'Invalid Mollie ID "{mollie_id}".')
+        else:
+            raise Exception(f'Invalid Mollie ID "{mollie_id}".')
