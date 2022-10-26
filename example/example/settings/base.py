@@ -131,6 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Django Finances
 
 DJANGO_FINANCES = {
+    'use_uuid': True,
     'payments': {
         'providers': 'example.providers'
     }

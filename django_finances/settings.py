@@ -40,6 +40,7 @@ def load_currency_definitions(path: str):
 class Settings:
     _settings = getattr(django_settings, 'DJANGO_FINANCES', {})
 
+    USE_UUID = _settings.get('use_uuid', False)
     USE_BIG_INTEGER = _settings.get('use_big_integer', False)
 
     _currency_settings = _settings.get('currencies', {})
@@ -52,6 +53,7 @@ class Settings:
         CURRENCY_DEFINITIONS = load_currency_definitions(CURRENCY_XML_PATH)
 
     _financial_entity_settings = _settings.get('financial_entities', {})
+    FINANCIAL_ENTITY_MODEL = _financial_entity_settings.get('model', 'django_finances.FinancialEntity')
     FINANCIAL_ENTITY_NAME_MAX_LENGTH = _financial_entity_settings.get('name_max_length', 255)
 
     _transaction_settings = _settings.get('transactions', {})

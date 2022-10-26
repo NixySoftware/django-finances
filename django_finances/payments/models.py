@@ -1,10 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django_finances.settings import Settings
+from ..fields import UUID4Field
+from ..settings import Settings
 
 
 class Payment(models.Model):
+
+    class Meta:
+        verbose_name = _('payment')
+        verbose_name_plural = _('payments')
 
     class Status(models.TextChoices):
         # TODO: potentially add more statuses (e.g. REFUNDED)
@@ -16,16 +21,19 @@ class Payment(models.Model):
         EXPIRED = 'EXPIRED', _('Expired'),
         FAILED = 'FAILED', _('Failed')
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    if Settings.USE_UUID:
+        id = UUID4Field(_('ID'), primary_key=True)
 
-    status = models.CharField(max_length=15, choices=Status.choices, default=Status.OPEN)
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+    status = models.CharField(_('status'), max_length=15, choices=Status.choices, default=Status.OPEN)
 
     if Settings.TRANSACTION_ENABLED:
-        transaction = models.OneToOneField('transactions.Transaction', related_name='payment', on_delete=models.PROTECT)
+        transaction = models.OneToOneField('transactions.Transaction', verbose_name=_('transaction'), related_name='payment', on_delete=models.PROTECT)
     else:
-        amount = models.BigIntegerField() if Settings.USE_BIG_INTEGER else models.IntegerField()
-        description = models.TextField()
+        amount = models.BigIntegerField(_('amount')) if Settings.USE_BIG_INTEGER else models.IntegerField(_('amount'))
+        description = models.TextField(_('description'))
 
     def get_amount(self):
         if Settings.TRANSACTION_ENABLED:
