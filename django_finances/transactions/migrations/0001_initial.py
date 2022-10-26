@@ -15,6 +15,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('django_finances', '0001_initial'),
+        migrations.swappable_dependency(Settings.FINANCIAL_ENTITY_MODEL),
     ]
 
     operations = [
