@@ -7,6 +7,18 @@ from .fields import UUID4Field
 from .settings import Settings
 
 
+class BaseModel(models.Model):
+
+    class Meta:
+        abstract = True
+
+    if Settings.USE_UUID:
+        id = UUID4Field(_('ID'), primary_key=True)
+
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+
 class FinancialEntityManager(models.Manager):
 
     def with_balance(self):
@@ -24,7 +36,7 @@ class AbstractFinancialEntity(models.Model):
         return self.name
 
 
-class FinancialEntity(AbstractFinancialEntity):
+class FinancialEntity(BaseModel, AbstractFinancialEntity):
 
     class Meta:
         verbose_name = _('financial entity')
@@ -33,12 +45,7 @@ class FinancialEntity(AbstractFinancialEntity):
     if Settings.TRANSACTION_ENABLED:
         objects = FinancialEntityManager()
 
-    if Settings.USE_UUID:
-        id = UUID4Field(_('ID'), primary_key=True)
-
     user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name=_('user'), blank=True, null=True, on_delete=models.SET_NULL)
-
-    pass
 
 
 class FinancialEntityMixin:

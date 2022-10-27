@@ -1,11 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from ..fields import UUID4Field
+from ..models import BaseModel
 from ..settings import Settings
 
 
-class Payment(models.Model):
+class Payment(BaseModel):
 
     class Meta:
         verbose_name = _('payment')
@@ -20,12 +20,6 @@ class Payment(models.Model):
         CANCELED = 'CANCELED', _('Cancelled'),
         EXPIRED = 'EXPIRED', _('Expired'),
         FAILED = 'FAILED', _('Failed')
-
-    if Settings.USE_UUID:
-        id = UUID4Field(_('ID'), primary_key=True)
-
-    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
-    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
     status = models.CharField(_('status'), max_length=15, choices=Status.choices, default=Status.OPEN)
 
