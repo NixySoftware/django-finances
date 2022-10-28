@@ -1,11 +1,13 @@
+from typing import Iterable
+
 from dateutil.rrule import rrulestr
-from django.apps import apps
 from django.db import models, transaction as db_transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from ..models import BaseModel
 from ..settings import Settings
+from .validators import validate_rrule
 
 
 class BaseTransaction(BaseModel):
@@ -29,30 +31,43 @@ class RecurringTransaction(BaseTransaction):
         verbose_name = _('recurring transaction')
         verbose_name_plural = _('recurring transactions')
 
-    # TODO: add rrule validation
-    recurrence = models.TextField(_('recurrence'))
+    recurrence = models.TextField(_('recurrence'), validators=[validate_rrule])
     last_occurred_at = models.DateTimeField(blank=True)
 
     entity = models.ForeignKey(Settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), related_name='recurring_transactions', on_delete=models.PROTECT)
 
-    def generate_transactions(self):
+    @property
+    def recurrence_rule(self):
+        # Parse recurrence rule
+        return rrulestr(self.recurrence, cache=True)
+
+    @staticmethod
+    def generate_transactions(recurring_transactions: Iterable['RecurringTransaction'] = None):
         with db_transaction.atomic():
-            # Parse recurrence rule and determine occurrences
-            recurrence_rule = rrulestr(self.recurrence)
-            occurrences = recurrence_rule.between(self.last_occurred_at, timezone.now())
+            # Find recurring transactions if not provided
+            if not recurring_transactions:
+                recurring_transactions = RecurringTransaction.objects.all()
 
-            for occurrence in occurrences:
-                # TODO: replace placeholders in description (date, etc.)
+            for recurring_transaction in recurring_transactions:
+                # Parse recurrence rule and determine occurrences between the last occurrence and now
+                if recurring_transaction.last_occurred_at:
+                    occurrences = recurring_transaction.recurrence_rule.between(recurring_transaction.last_occurred_at, timezone.now(), inc=False)
+                else:
+                    occurrences = recurring_transaction.recurrence_rule.before(timezone.now(), inc=False)
 
-                # Create transaction
-                transaction = Transaction(timestamp=occurrence, amount=self.amount, description=self.description, entity=self.entity)
-                transaction.save()
+                for occurrence in occurrences:
+                    # TODO: replace placeholders in description (date, etc.)
 
-                # Update last occurrence
-                self.last_occurred_at = occurrence
+                    # Create transaction
+                    transaction = Transaction(timestamp=occurrence, amount=recurring_transaction.amount, description=recurring_transaction.description,
+                                              entity=recurring_transaction.entity)
+                    transaction.save()
 
-            # Save last occurrence
-            self.save()
+                    # Update last occurrence
+                    recurring_transaction.last_occurred_at = occurrence
+
+                # Save last occurrence
+                recurring_transaction.save()
 
 
 class Transaction(BaseTransaction):
