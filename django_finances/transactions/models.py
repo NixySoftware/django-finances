@@ -1,9 +1,10 @@
 from dateutil.rrule import rrulestr
+from django.apps import apps
 from django.db import models, transaction as db_transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from ..models import BaseModel, FinancialEntity
+from ..models import BaseModel
 from ..settings import Settings
 
 
@@ -18,8 +19,6 @@ class BaseTransaction(BaseModel):
 
     # TODO: consider adding currency support (e.g. local_amount and local_currency)
 
-    entity = models.ForeignKey(Settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), related_name='transactions', on_delete=models.PROTECT)
-
     def __str__(self):
         return self.description
 
@@ -33,6 +32,8 @@ class RecurringTransaction(BaseTransaction):
     # TODO: add rrule validation
     recurrence = models.TextField(_('recurrence'))
     last_occurred_at = models.DateTimeField(blank=True)
+
+    entity = models.ForeignKey(Settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), related_name='recurring_transactions', on_delete=models.PROTECT)
 
     def generate_transactions(self):
         with db_transaction.atomic():
@@ -60,6 +61,7 @@ class Transaction(BaseTransaction):
         verbose_name = _('transaction')
         verbose_name_plural = _('transactions')
 
+    entity = models.ForeignKey(Settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), related_name='transactions', on_delete=models.PROTECT)
     recurring_transaction = models.ForeignKey(RecurringTransaction, verbose_name=_('recurring transaction'), related_name='transactions',
                                               blank=True, null=True, on_delete=models.SET_NULL)
 
@@ -70,8 +72,7 @@ class Transaction(BaseTransaction):
     def generate_settlements():
         with db_transaction.atomic():
             # Find entities and their balances
-            # TODO: support Settings.FINANCIAL_ENTITY_MODEL
-            entities = FinancialEntity.objects.with_balance().all()
+            entities = Settings.get_financial_entity_model().objects.with_balance().all()
 
             for entity in entities:
                 # Find unsettled transactions

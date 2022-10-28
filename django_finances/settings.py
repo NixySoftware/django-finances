@@ -78,3 +78,8 @@ class Settings:
             if isinstance(provider, cls):
                 return provider
         return None
+
+    @staticmethod
+    def get_financial_entity_model():
+        app_label, _, model = Settings.FINANCIAL_ENTITY_MODEL.rpartition('.')
+        return apps.get_model(app_label, model)

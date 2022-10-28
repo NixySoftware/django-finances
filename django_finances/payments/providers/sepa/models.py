@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django_finances.models import FinancialEntity
+from django_finances.settings import Settings
 
 
 class SequenceType(models.TextChoices):
@@ -24,7 +24,7 @@ class Mandate(models.Model):
 
     # TODO: status, error message
 
-    entity = models.ForeignKey(FinancialEntity, related_name='mandates', on_delete=models.CASCADE)
+    entity = models.ForeignKey(Settings.FINANCIAL_ENTITY_MODEL, related_name='mandates', on_delete=models.CASCADE)
 
 
 class DirectDebit(models.Model):

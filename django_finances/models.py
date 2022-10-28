@@ -49,4 +49,4 @@ class FinancialEntity(BaseModel, AbstractFinancialEntity):
 
 
 class FinancialEntityMixin:
-    entity = models.OneToOneField(FinancialEntity, verbose_name=_('entity'), blank=True, null=True, on_delete=models.SET_NULL)
+    entity = models.OneToOneField(Settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), blank=True, null=True, on_delete=models.SET_NULL)
