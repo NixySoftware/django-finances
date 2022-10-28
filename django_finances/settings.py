@@ -5,6 +5,7 @@ from typing import TypedDict
 
 from django.apps import apps
 from django.conf import settings as django_settings
+from django.utils.translation import gettext_lazy as _
 from lxml import etree
 
 
@@ -59,17 +60,20 @@ class Settings:
     _transaction_settings = _settings.get('transactions', {})
     TRANSACTION_ENABLED = apps.is_installed('django_finances.transactions')
     TRANSACTION_SETTLEMENT_ENABLED = _transaction_settings.get('settlement_enabled', True)
-    TRANSACTION_SETTLEMENT_DESCRIPTION = _transaction_settings.get('settlement_name', 'Settlement')
+    TRANSACTION_SETTLEMENT_DESCRIPTION = _transaction_settings.get('settlement_name', _('Settlement'))
 
     _payment_settings = _settings.get('payments', {})
     PAYMENT_ENABLED = apps.is_installed('django_finances.payments')
-    PAYMENT_PROVIDERS = _payment_settings.get('providers', '')
+    PAYMENT_PROVIDERS = _payment_settings.get('providers', None)
 
     @staticmethod
     @functools.cache
     def get_payment_providers():
-        provider_module = import_module(Settings.PAYMENT_PROVIDERS)
-        return provider_module.providers
+        if Settings.PAYMENT_PROVIDERS:
+            provider_module = import_module(Settings.PAYMENT_PROVIDERS)
+            return provider_module.providers
+        else:
+            return []
 
     @staticmethod
     def get_payment_provider(cls):

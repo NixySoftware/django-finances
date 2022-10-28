@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from django_finances.models import BaseModel
 from django_finances.settings import Settings
 
 
@@ -11,53 +12,59 @@ class SequenceType(models.TextChoices):
     ONE_OFF = 'OOFF', _('One-off')
 
 
-class Mandate(models.Model):
+class Mandate(BaseModel):
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    signed_at = models.DateTimeField()
-    identifier = models.CharField(max_length=35)
-    iban = models.CharField(max_length=34)
-    bic = models.CharField(max_length=11)
-    reason = models.TextField()
-    next_sequence_type = models.CharField(max_length=4, choices=SequenceType.choices, default=SequenceType.FIRST)
+    class Meta:
+        verbose_name = _('mandate')
+        verbose_name_plural = _('mandates')
 
+    signed_at = models.DateTimeField(_('signed at'))
+    identifier = models.CharField(_('identifier'), max_length=35)
+    iban = models.CharField(_('IBAN'), max_length=34)
+    bic = models.CharField(_('BIC'), max_length=11)
+    reason = models.TextField(_('reason'))
+    next_sequence_type = models.CharField(_('next sequence type'), max_length=4, choices=SequenceType.choices, default=SequenceType.FIRST)
     # TODO: status, error message
 
-    entity = models.ForeignKey(Settings.FINANCIAL_ENTITY_MODEL, related_name='mandates', on_delete=models.CASCADE)
+    entity = models.ForeignKey(Settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), related_name='mandates', on_delete=models.CASCADE)
 
 
-class DirectDebit(models.Model):
+class DirectDebit(BaseModel):
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    collected_at = models.DateField()
+    class Meta:
+        verbose_name = _('direct debit')
+        verbose_name_plural = _('direct debits')
+
+    collected_at = models.DateField(_('collected at'))
     identifier = models.CharField(max_length=35)
 
 
-class DirectDebitBatch(models.Model):
+class DirectDebitBatch(BaseModel):
+
     class Meta:
+        verbose_name = _('direct debit batch')
+        verbose_name_plural = _('direct debit batches')
         unique_together = ('direct_debit', 'sequence_type')
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    identifier = models.CharField(max_length=35)
-    sequence_type = models.CharField(max_length=4, choices=SequenceType.choices)
+    identifier = models.CharField(_('identifier'), max_length=35)
+    sequence_type = models.CharField(_('sequence type'), max_length=4, choices=SequenceType.choices)
 
-    direct_debit = models.ForeignKey(DirectDebit, related_name='batches', on_delete=models.CASCADE)
+    direct_debit = models.ForeignKey(DirectDebit, verbose_name=_('direct debit'), related_name='batches', on_delete=models.CASCADE)
 
 
-class DirectDebitInstruction(models.Model):
+class DirectDebitInstruction(BaseModel):
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    identifier = models.CharField(max_length=35)
-    iban = models.CharField(max_length=34)
-    bic = models.CharField(max_length=11)
-    description = models.CharField(max_length=140, blank=True)
-    reference = models.CharField(max_length=35, blank=True)
+    class Meta:
+        verbose_name = _('direct debit instruction')
+        verbose_name_plural = _('direct debit instructions')
 
-    batch = models.ForeignKey(DirectDebit, related_name='instructions', on_delete=models.CASCADE)
-    mandate = models.ForeignKey(Mandate, related_name='instructions', blank=True, null=True, on_delete=models.SET_NULL)
+    identifier = models.CharField(_('identifier'), max_length=35)
+    iban = models.CharField(_('IBAN'), max_length=34)
+    bic = models.CharField(_('BIC'), max_length=11)
+    description = models.CharField(_('description'), max_length=140, blank=True)
+    reference = models.CharField(_('reference'), max_length=35, blank=True)
 
-    payment = models.OneToOneField('payments.Payment', related_name='direct_debit_instruction', on_delete=models.PROTECT)
+    batch = models.ForeignKey(DirectDebit, verbose_name=_('batch'), related_name='instructions', on_delete=models.CASCADE)
+    mandate = models.ForeignKey(Mandate, verbose_name=_('mandate'), related_name='instructions', blank=True, null=True, on_delete=models.SET_NULL)
+
+    payment = models.OneToOneField('payments.Payment', verbose_name=_('payment'), related_name='direct_debit_instruction', on_delete=models.PROTECT)

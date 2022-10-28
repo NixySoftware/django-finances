@@ -1,0 +1,228 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-10-28 23:04+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: django_finances/payments/models.py:11
+#: django_finances/payments/providers/invoice/models.py:43
+#: django_finances/payments/providers/mollie/models.py:16
+#: django_finances/payments/providers/sepa/models.py:70
+msgid "payment"
+msgstr "betaling"
+
+#: django_finances/payments/models.py:12
+msgid "payments"
+msgstr "betalingen"
+
+#: django_finances/payments/models.py:16
+msgid "Open"
+msgstr "Open"
+
+#: django_finances/payments/models.py:17
+msgid "Pending"
+msgstr "In afwachting"
+
+#: django_finances/payments/models.py:18
+msgid "Authorized"
+msgstr "Geautoriseerd"
+
+#: django_finances/payments/models.py:19
+msgid "Completed"
+msgstr "Compleet"
+
+#: django_finances/payments/models.py:20
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+#: django_finances/payments/models.py:21
+msgid "Expired"
+msgstr "Verlopen"
+
+#: django_finances/payments/models.py:22
+msgid "Failed"
+msgstr "Gefaald"
+
+#: django_finances/payments/models.py:24
+msgid "status"
+msgstr "status"
+
+#: django_finances/payments/models.py:27
+msgid "transaction"
+msgstr "transactie"
+
+#: django_finances/payments/models.py:29
+msgid "amount"
+msgstr "bedrag"
+
+#: django_finances/payments/models.py:30
+#: django_finances/payments/providers/sepa/models.py:64
+msgid "description"
+msgstr "omschrijving"
+
+#: django_finances/payments/providers/invoice/models.py:18
+msgid "invoice template"
+msgstr "factuursjabloon"
+
+#: django_finances/payments/providers/invoice/models.py:19
+msgid "invoice templates"
+msgstr "factuursjablonen"
+
+#: django_finances/payments/providers/invoice/models.py:27
+msgid "invoice template file"
+msgstr "factuursjabloonbestand"
+
+#: django_finances/payments/providers/invoice/models.py:28
+msgid "invoice template files"
+msgstr "factuursjabloonbestanden"
+
+#: django_finances/payments/providers/invoice/models.py:30
+#: django_finances/payments/providers/invoice/models.py:53
+msgid "file"
+msgstr "bestand"
+
+#: django_finances/payments/providers/invoice/models.py:32
+#: django_finances/payments/providers/invoice/models.py:44
+msgid "template"
+msgstr "sjabloon"
+
+#: django_finances/payments/providers/invoice/models.py:38
+#: django_finances/payments/providers/invoice/models.py:55
+msgid "invoice"
+msgstr "factuur"
+
+#: django_finances/payments/providers/invoice/models.py:39
+msgid "invoices"
+msgstr "facturen"
+
+#: django_finances/payments/providers/invoice/models.py:50
+msgid "invoice file"
+msgstr "factuurbestand"
+
+#: django_finances/payments/providers/invoice/models.py:51
+msgid "invoice files"
+msgstr "factuurbestanden"
+
+#: django_finances/payments/providers/mollie/models.py:10
+msgid "mollie payment"
+msgstr "mollie betaling"
+
+#: django_finances/payments/providers/mollie/models.py:11
+msgid "mollie payments"
+msgstr "mollie betalingen"
+
+#: django_finances/payments/providers/mollie/models.py:13
+#: django_finances/payments/providers/sepa/models.py:22
+#: django_finances/payments/providers/sepa/models.py:49
+#: django_finances/payments/providers/sepa/models.py:61
+msgid "identifier"
+msgstr "identificatienummer"
+
+#: django_finances/payments/providers/mollie/models.py:14
+msgid "checkout url"
+msgstr "afreken url"
+
+#: django_finances/payments/providers/sepa/models.py:9
+msgid "First"
+msgstr "Eerste"
+
+#: django_finances/payments/providers/sepa/models.py:10
+msgid "Recurrent"
+msgstr "Terugkerend"
+
+#: django_finances/payments/providers/sepa/models.py:11
+msgid "Final"
+msgstr "Laatste"
+
+#: django_finances/payments/providers/sepa/models.py:12
+msgid "One-off"
+msgstr "Eenmalig"
+
+#: django_finances/payments/providers/sepa/models.py:18
+#: django_finances/payments/providers/sepa/models.py:68
+msgid "mandate"
+msgstr "machtiging"
+
+#: django_finances/payments/providers/sepa/models.py:19
+msgid "mandates"
+msgstr "machtigingen"
+
+#: django_finances/payments/providers/sepa/models.py:21
+msgid "signed at"
+msgstr "getekend op"
+
+#: django_finances/payments/providers/sepa/models.py:23
+#: django_finances/payments/providers/sepa/models.py:62
+msgid "IBAN"
+msgstr "IBAN"
+
+#: django_finances/payments/providers/sepa/models.py:24
+#: django_finances/payments/providers/sepa/models.py:63
+msgid "BIC"
+msgstr "BIC"
+
+#: django_finances/payments/providers/sepa/models.py:25
+msgid "reason"
+msgstr "reden"
+
+#: django_finances/payments/providers/sepa/models.py:26
+msgid "next sequence type"
+msgstr "volgende reekstype"
+
+#: django_finances/payments/providers/sepa/models.py:29
+msgid "entity"
+msgstr "entiteit"
+
+#: django_finances/payments/providers/sepa/models.py:35
+#: django_finances/payments/providers/sepa/models.py:52
+msgid "direct debit"
+msgstr "incasso"
+
+#: django_finances/payments/providers/sepa/models.py:36
+msgid "direct debits"
+msgstr "incasso's"
+
+#: django_finances/payments/providers/sepa/models.py:38
+msgid "collected at"
+msgstr "geïncasseerd op"
+
+#: django_finances/payments/providers/sepa/models.py:45
+msgid "direct debit batch"
+msgstr "incassobatch"
+
+#: django_finances/payments/providers/sepa/models.py:46
+msgid "direct debit batches"
+msgstr "incassobatches"
+
+#: django_finances/payments/providers/sepa/models.py:50
+msgid "sequence type"
+msgstr "reekstype"
+
+#: django_finances/payments/providers/sepa/models.py:58
+msgid "direct debit instruction"
+msgstr "incasso-instructie"
+
+#: django_finances/payments/providers/sepa/models.py:59
+msgid "direct debit instructions"
+msgstr "incasso-instructies"
+
+#: django_finances/payments/providers/sepa/models.py:65
+msgid "reference"
+msgstr "referentie"
+
+#: django_finances/payments/providers/sepa/models.py:67
+msgid "batch"
+msgstr "batch"
