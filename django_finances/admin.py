@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.contrib.admin import register
 
-from .models import FinancialEntity
 from .settings import Settings
 
 
 if Settings.FINANCIAL_ENTITY_MODEL == 'django_finances.FinancialEntity':
+    from .models import FinancialEntity
+
+
     @register(FinancialEntity)
     class FinancialEntityAdmin(admin.ModelAdmin):
         list_display = ['name', 'balance'] if Settings.TRANSACTION_ENABLED else ['name']

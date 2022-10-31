@@ -36,16 +36,17 @@ class AbstractFinancialEntity(models.Model):
         return self.name
 
 
-class FinancialEntity(BaseModel, AbstractFinancialEntity):
+if Settings.FINANCIAL_ENTITY_MODEL == 'django_finances.FinancialEntity':
+    class FinancialEntity(BaseModel, AbstractFinancialEntity):
 
-    class Meta:
-        verbose_name = _('financial entity')
-        verbose_name_plural = _('financial entities')
+        class Meta:
+            verbose_name = _('financial entity')
+            verbose_name_plural = _('financial entities')
 
-    if Settings.TRANSACTION_ENABLED:
-        objects = FinancialEntityManager()
+        if Settings.TRANSACTION_ENABLED:
+            objects = FinancialEntityManager()
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name=_('user'), blank=True, null=True, on_delete=models.SET_NULL)
+        user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name=_('user'), blank=True, null=True, on_delete=models.SET_NULL)
 
 
 class FinancialEntityMixin:
