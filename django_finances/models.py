@@ -19,7 +19,7 @@ class BaseModel(models.Model):
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 
 
-class FinancialEntityManager(models.Manager):
+class AbstractFinancialEntityManager(models.Manager):
 
     def with_balance(self):
         return self.annotate(balance=Sum('transactions__amount'))
@@ -37,6 +37,10 @@ class AbstractFinancialEntity(models.Model):
 
 
 if Settings.FINANCIAL_ENTITY_MODEL == 'django_finances.FinancialEntity':
+    class FinancialEntityManager(AbstractFinancialEntityManager):
+        pass
+
+
     class FinancialEntity(BaseModel, AbstractFinancialEntity):
 
         class Meta:
