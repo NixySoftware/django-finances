@@ -21,7 +21,9 @@ INSTALLED_APPS = [
     'django_finances.payments',
     
     # Zero or more payment providers
+    'django_finances.payments.providers.invoice',
     'django_finances.payments.providers.mollie',
+    'django_finances.payments.providers.sepa',
 ]
 ```
 3. Configure the settings, see [configuration](configuration.md):
