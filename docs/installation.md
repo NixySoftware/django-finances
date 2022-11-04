@@ -24,7 +24,17 @@ INSTALLED_APPS = [
     'django_finances.payments.providers.mollie',
 ]
 ```
-3. Configure the settings:
+3. Configure the settings, see [configuration](configuration.md):
 ```python
-# TODO
+# Django Finances
+
+DJANGO_FINANCES = {
+    # ...
+}
+```
+**Note:** Some settings can only be configured before the first migration.
+
+4. Migrate the database:
+```bash
+python manage.py migrate
 ```
