@@ -6,13 +6,13 @@ build-backend = "poetry.core.masonry.api"
 name = "django-finances"
 version = "0.0.6"
 description = "Financial transactions and payments for Django."
-authors = ["Daniel Huisman <daniel@huisman.me>"]
-maintainers = ["Daniel Huisman <daniel@huisman.me>"]
+authors = ["Nixy <info@nixy.software>"]
+maintainers = ["Nixy <info@nixy.software>"]
 license = "MIT"
 readme = "README.md"
 
-homepage = "https://github.com/DanielHuisman/django-finances"
-repository = "https://github.com/DanielHuisman/django-finances"
+homepage = "https://github.com/NixyOrg/django-finances"
+repository = "https://github.com/NixyOrg/django-finances"
 
 keywords = ["django", "transaction", "payment", "finance"]
 
