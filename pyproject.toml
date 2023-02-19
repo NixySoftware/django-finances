@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "django-finances"
-version = "0.0.6"
+version = "0.0.7"
 description = "Financial transactions and payments for Django."
 authors = ["Nixy <info@nixy.software>"]
 maintainers = ["Nixy <info@nixy.software>"]
