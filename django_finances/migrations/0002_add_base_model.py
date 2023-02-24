@@ -24,4 +24,4 @@ class Migration(migrations.Migration):
             name='updated_at',
             field=models.DateTimeField(auto_now=True, verbose_name='updated at'),
         ),
-    ] if Settings.FINANCIAL_ENTITY_MODEL == 'django_finances.FinancialEntity' else []
+    ]

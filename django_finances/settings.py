@@ -54,7 +54,7 @@ class Settings:
         CURRENCY_DEFINITIONS = load_currency_definitions(CURRENCY_XML_PATH)
 
     _financial_entity_settings = _settings.get('financial_entities', {})
-    FINANCIAL_ENTITY_MODEL = _financial_entity_settings.get('model', 'django_finances.FinancialEntity')
+    FINANCIAL_ENTITY_MODEL = django_settings.FINANCIAL_ENTITY_MODEL
     FINANCIAL_ENTITY_NAME_MAX_LENGTH = _financial_entity_settings.get('name_max_length', 255)
 
     _transaction_settings = _settings.get('transactions', {})

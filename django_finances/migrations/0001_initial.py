@@ -29,6 +29,8 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'financial entity',
                 'verbose_name_plural': 'financial entities',
+                'abstract': False,
+                'swappable': 'FINANCIAL_ENTITY_MODEL',
             },
         ),
-    ] if Settings.FINANCIAL_ENTITY_MODEL == 'django_finances.FinancialEntity' else []
+    ]

@@ -43,7 +43,7 @@ class FinancialEntityManager(AbstractFinancialEntityManager):
 class FinancialEntity(BaseModel, AbstractFinancialEntity):
 
     class Meta:
-        swappable = Settings.FINANCIAL_ENTITY_MODEL
+        swappable = 'FINANCIAL_ENTITY_MODEL'
         verbose_name = _('financial entity')
         verbose_name_plural = _('financial entities')
 
@@ -54,4 +54,4 @@ class FinancialEntity(BaseModel, AbstractFinancialEntity):
 
 
 class FinancialEntityMixin:
-    entity = models.OneToOneField(Settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), blank=True, null=True, on_delete=models.SET_NULL)
+    entity = models.OneToOneField(settings.FINANCIAL_ENTITY_MODEL, verbose_name=_('entity'), blank=True, null=True, on_delete=models.SET_NULL)

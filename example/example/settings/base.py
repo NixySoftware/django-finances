@@ -130,6 +130,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Django Finances
 
+FINANCIAL_ENTITY_MODEL = 'django_finances.FinancialEntity'
+
 DJANGO_FINANCES = {
     'use_uuid': True,
     'payments': {
