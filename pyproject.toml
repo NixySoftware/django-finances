@@ -35,4 +35,4 @@ python-dateutil = "^2.8.2"
 
 [tool.poetry.dev-dependencies]
 mollie-api-python = "^3.1.0"
-djangorestframework = "^3.14.0"
+djangorestframework = "^3.15.2"
